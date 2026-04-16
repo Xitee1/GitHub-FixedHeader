@@ -1,11 +1,13 @@
-# Github Fixed Header [![tag](https://img.shields.io/github/tag/StylishThemes/GitHub-FixedHeader.svg)](https://github.com/StylishThemes/GitHub-FixedHeader/tags)
+# Github Fixed Header [![tag](https://img.shields.io/github/tag/Xitee1/GitHub-FixedHeader.svg)](https://github.com/Xitee1/GitHub-FixedHeader/tags)
 
-A simple userstyle to make the main header (or menu) of Github remain fixed at the top of the screen.
+A simple userstyle to make the main header (or menu) of GitHub remain fixed at the top of the screen.
 
-* Fixes main header.
-* Fixes Pull request diff bar.
-* Fixes Pull request and commit file headers.
-* Adjusts the subheader position on various pages.
+> This is a fork of [StylishThemes/GitHub-FixedHeader](https://github.com/StylishThemes/GitHub-FixedHeader) that has been updated for the 2024+ GitHub redesign (`.AppHeader`) and adds support for GitHub Enterprise Cloud (`*.ghe.com`).
+
+* Fixes the main header (logged-in & logged-out).
+* Works with the modern GitHub layout — content below is no longer overlapped.
+* Works on `github.com`, `gist.github.com` and GitHub Enterprise Cloud (`*.ghe.com`).
+* Keeps pull-request and commit diff file headers stacked correctly beneath the app header.
 
 ## Install
 
@@ -16,16 +18,14 @@ A userstyle extension is required, common ones include:
 
 Then:
 
-📦 [Install the usercss](https://raw.githubusercontent.com/StylishThemes/GitHub-FixedHeader/master/github-fixed-header.user.css). Supports automatic updates.<br>
-📦 [Install from OpenUserCSS](https://openusercss.org/theme/5a514de3d4c8c00b00837103).
+📦 [Install the usercss](https://raw.githubusercontent.com/Xitee1/GitHub-FixedHeader/master/github-fixed-header.user.css). Supports automatic updates.
 
 ## Contributions
 
 If you would like to contribute to this repository, please...
 
 1. 👓 Read the [contribution guidelines](CONTRIBUTING.md).
-2. ![repo-forked](https://user-images.githubusercontent.com/136959/42383736-c4cb0db8-80fd-11e8-91ca-12bae108bccc.png) [fork](https://github.com/StylishThemes/GitHub-FixedHeader/fork) or ![cloud-download](https://user-images.githubusercontent.com/136959/42401932-9ee9cae0-813d-11e8-8691-16e29a85d3b9.png)
-[Download](https://github.com/StylishThemes/GitHub-FixedHeader/archive/master.zip),
+2. [Fork](https://github.com/Xitee1/GitHub-FixedHeader/fork) or [download](https://github.com/Xitee1/GitHub-FixedHeader/archive/master.zip) the repository.
 3. 👌 Create a pull request!
 
 Thanks to all that have [contributed](AUTHORS) so far!
