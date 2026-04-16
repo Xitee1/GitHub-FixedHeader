@@ -1,152 +1,119 @@
 /* ==UserStyle==
 @name        GitHub Fixed Header
-@version     1.2.18
-@description Add a pinned header on GitHub
-@namespace   github.com/StylishThemes
-@author      StylishThemes <https://github.com/StylishThemes>
-@homepageURL https://github.com/StylishThemes/GitHub-FixedHeader
-@supportURL  https://github.com/StylishThemes/GitHub-FixedHeader/issues
-@updateURL   https://github.com/StylishThemes/GitHub-FixedHeader/raw/master/github-fixed-header.user.css
+@version     2.0.0
+@description Add a pinned header on GitHub (github.com, gist, GitHub Enterprise Cloud *.ghe.com)
+@namespace   github.com/Xitee1
+@author      Xitee1 <https://github.com/Xitee1> (forked from StylishThemes)
+@homepageURL https://github.com/Xitee1/GitHub-FixedHeader
+@supportURL  https://github.com/Xitee1/GitHub-FixedHeader/issues
+@updateURL   https://github.com/Xitee1/GitHub-FixedHeader/raw/master/github-fixed-header.user.css
 @license     CC-BY-SA-4.0
 ==/UserStyle== */
-@-moz-document regexp("^https?://((gist|guides|help|raw|status|developer)\\.)?github\\.com/((?!generated_pages/preview).)*$") {
+@-moz-document
+  regexp("^https?://((gist|guides|help|raw|status|developer)\\.)?github\\.com/((?!generated_pages/preview).)*$"),
+  regexp("^https?://([^/]+\\.)?ghe\\.com/.*$") {
   /* AGENT_SHEET */
-  :root {
-    --height: 65px;
-    --secondary-height: 40px;
+
+  /* -----------------------------------------------------------
+   * Modern GitHub (2024+ redesign)
+   * -----------------------------------------------------------
+   * Use `position: sticky` rather than `position: fixed` + body
+   * padding. Sticky keeps the header's space in the document flow,
+   * so the content below is never overlapped, regardless of how
+   * GitHub restructures its page layout in the future.
+   */
+
+  /* Logged-in main header (`.AppHeader`) */
+  header.AppHeader,
+  .AppHeader {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
   }
-  body:not(.project-full-screen),
-  /* .is-stuck = discussion sidebar & https://github.com/integrations > Category */
-  .is-stuck {
-    padding-top: var(--height) !important;
+
+  /* Any ancestor with `overflow: clip|hidden` would break sticky —
+   * the React wrapper and body shouldn't clip. */
+  html,
+  body,
+  react-app,
+  .application-main {
+    overflow: visible !important;
   }
-  body.logged-out:not(.f4),
-  body.session-authentication {
-    padding-top: var(--height) !important;
+
+  /* Logged-out marketing / sign-in / session pages */
+  header.HeaderMktg,
+  header.header-logged-out {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
   }
-  .pr-toolbar.is-stuck .diffbar {
-    background: #ddd;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    padding: 8px;
+
+  /* Legacy headers (older GHE releases, help.github.com, etc.) */
+  body.logged-in .Header,
+  body.logged-in .Header-old,
+  .js-header-wrapper,
+  .site-header,
+  #com #header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
   }
-  .gh-header .gh-header-sticky.is-stuck + .gh-header-shadow {
-    top: var(--height) !important;
+
+  /* Popovers, notifications & overlays must appear above the header */
+  .Popover,
+  .notifications-dropdown,
+  [data-component="Popover"],
+  [data-component="overlay"],
+  [data-component="SelectPanel"] {
+    z-index: 101 !important;
   }
-  /* Fix code block shift when sticky */
-  .highlight[style*="overflow-x"] {
-    overflow-x: unset !important;
-  }
-  /* Fix github.com/orgs/:org/people "Select all" sub-header */
-  .table-list-header.table-list-header-next.js-sticky.is-stuck {
-    height: calc(var(--height) + 50px);
-  }
-  /* Fix breaking floats */
-  .file-header:before {
-    clear: both;
-  }
-  /* Fixes other misalignment of headers */
-  .diff-view .file-header {
-    height: var(--secondary-height) !important;
-  }
-  .header-logged-out {
-    height: var(--height) !important;
-  }
-  .is-stuck ~ #files .file-actions,
-  .is-stuck ~ #files .file-info {
-    position: relative;
-  }
-  /* make diff file header sticky under the toolbar & main header;
-   * modified from Refined GitHub extension */
+
+  /* Pull-request & commit diff file headers stack below the app header */
   @supports (position: sticky) {
-    #files .file-header {
+    #files .file-header,
+    .file-header[data-anchor],
+    .js-file-header {
       position: sticky !important;
-      position: -webkit-sticky !important;
-      top: 110px !important;
-      width: 100% !important;
-      height: 40px !important;
+      top: 60px !important;
       z-index: 6 !important;
     }
-    #files .file-header.has-open-dropdown {
+    #files .file-header.has-open-dropdown,
+    .js-file-header.has-open-dropdown {
       z-index: 10 !important;
     }
   }
-  /* user page bar now appears under fixed header */
-  .user-profile-sticky-bar:after, div.discussion-sidebar, div.blog-aside {
-    top: var(--height) !important;
+
+  /* Anchors (#foo) should land below the sticky header, not behind it */
+  :target,
+  .accessibility-aid,
+  a.anchor {
+    scroll-margin-top: 80px !important;
   }
-  #toc + #files .file-header {
-    top: var(--height) !important;
-  }
-  /* move loading bar into view */
-  .pjax-loader-bar, .pjax-loader-bar .progress {
+
+  /* Keep the PJAX / Turbo progress bar visible above the header */
+  .pjax-loader-bar,
+  .pjax-loader-bar .progress,
+  .turbo-progress-bar {
     z-index: 1001 !important;
   }
-  /* move anchors below fixed header */
-  .accessibility-aid, a.anchor {
-    padding-top: 55px !important;
-    margin-top: -55px !important;
-    pointer-events: none;
-    /* anchors on help.github.com */
-    min-width: 5px !important;
-    display: inline-block !important;
+
+  /* Fix code block shift when sticky (legacy) */
+  .highlight[style*="overflow-x"] {
+    overflow-x: unset !important;
   }
-  a.anchor svg, /* spans used on help.github.com */
-  a.anchor span {
-    pointer-events: all !important;
-    min-width: 20px !important;
-  }
-  /* make personal, blog, explore, etc match logged in height */
-  .site-header {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-  }
-  /* page indicator on personal, open source, business & explore pages */
-  .site-header-nav-main .nav-item:after {
-    bottom: -10px !important;
-  }
-  /* .main-content? */
-  #js-flash-container + .main-content {
-    margin-top: 0 !important;
-  }
-  /* .header = logged-in */
-  body.logged-in .header,
-  /* .site-header = not-logged-in (removed 22 Aug 2017) */
-  .site-header,
-  /* .Header = (changed from .header) both logged in and not,
-   * added on 22 Aug 2017
-   */
-  .Header,
-  /* .Header => .Header-old (changed ~18 March 2019),
-   * added .js-header-wrapper because it's the parent of .Header-old
-   */
-  .js-header-wrapper, .Header-old,
-  /* #com #header = help.github.com */
-  #com #header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    z-index: 1000 !important;
-  }
-  /*
-   * GitHub Notifications Dropdown userscript tweak
-   * https://openuserjs.org/scripts/joeytwiddle/Github_Notifications_Dropdown
-   */
-  .notifications-dropdown, .Popover {
-    z-index: 1001 !important;
-  }
-  /* Octotree side panel open - see #6 */
-  .octotree-show .header .container, .octotree-show .Header .container {
+
+  /* Octotree side panel compatibility — see #6 */
+  .octotree-show .AppHeader .AppHeader-globalBar,
+  .octotree-show .Header .container {
     margin-left: auto !important;
   }
 }
+
 @-moz-document domain("gist.github.com") {
-  /* gists don't have a secondary header */
+  /* Gists don't have a secondary header — align file headers to 0 */
   @supports (position: sticky) {
     #files .file-header {
-      top: var(--height) !important;
+      top: 0 !important;
     }
   }
 }
