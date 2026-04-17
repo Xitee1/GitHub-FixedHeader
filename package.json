@@ -1,7 +1,7 @@
 {
   "name": "github-fixedheader",
   "title": "GitHub Fixed Header",
-  "version": "2.0.2",
+  "version": "2.0.1",
   "description": "Add a pinned header on GitHub",
   "license": "CC-BY-SA-4.0",
   "main": "github-fixed-header.user.css",
