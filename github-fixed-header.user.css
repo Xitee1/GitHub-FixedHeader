@@ -68,6 +68,20 @@
     z-index: 101 !important;
   }
 
+  /* Notification shelf (shown when viewing an item opened from the
+   * notifications inbox). GitHub already sets `position: sticky; top: 0`
+   * on it, but that collides with the sticky AppHeader — both try to
+   * pin to the top and overlap. Stick it just below the AppHeader
+   * instead so both stay visible while scrolling. */
+  #notification-shelf,
+  .js-notification-shelf,
+  .js-notification-top-shelf,
+  .notification-shelf {
+    position: sticky !important;
+    top: 60px !important;
+    z-index: 99 !important;
+  }
+
   /* Pull-request & commit diff file headers stack below the app header */
   @supports (position: sticky) {
     #files .file-header,
