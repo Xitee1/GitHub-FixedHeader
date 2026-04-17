@@ -1,6 +1,6 @@
 /* ==UserStyle==
 @name        GitHub Fixed Header
-@version     2.0.1
+@version     2.0.2
 @description Add a pinned header on GitHub (github.com, gist, GitHub Enterprise Cloud *.ghe.com)
 @namespace   github.com/Xitee1
 @author      Xitee1 <https://github.com/Xitee1> (forked from StylishThemes)
@@ -69,17 +69,25 @@
   }
 
   /* Notification shelf (shown when viewing an item opened from the
-   * notifications inbox). GitHub already sets `position: sticky; top: 0`
-   * on it, but that collides with the sticky AppHeader — both try to
-   * pin to the top and overlap. Stick it just below the AppHeader
-   * instead so both stay visible while scrolling. */
+   * notifications inbox). GitHub's own `position: sticky; top: 0`
+   * unsticks as soon as its containing block scrolls out of view,
+   * so the shelf slides under the AppHeader. Pin it with
+   * `position: fixed` below the AppHeader so it stays visible. */
   #notification-shelf,
   .js-notification-shelf,
   .js-notification-top-shelf,
   .notification-shelf {
-    position: sticky !important;
+    position: fixed !important;
     top: 60px !important;
+    right: 0 !important;
+    left: 0 !important;
     z-index: 99 !important;
+  }
+
+  /* `position: fixed` removes the shelf from flow — push the page
+   * content down so nothing hides underneath it. */
+  body:has(#notification-shelf) .application-main {
+    margin-top: 60px !important;
   }
 
   /* Pull-request & commit diff file headers stack below the app header */
