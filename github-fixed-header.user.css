@@ -69,25 +69,25 @@
   }
 
   /* Notification shelf (shown when viewing an item opened from the
-   * notifications inbox). GitHub's own `position: sticky; top: 0`
-   * unsticks as soon as its containing block scrolls out of view,
-   * so the shelf slides under the AppHeader. Pin it with
-   * `position: fixed` below the AppHeader so it stays visible. */
+   * notifications inbox). GitHub sets `position: sticky; top: 0` on it
+   * natively, which collides with the sticky AppHeader. Stick it below
+   * the AppHeader instead. Sticky needs every ancestor to avoid
+   * `overflow: hidden/clip`, so also free up the known wrappers. */
   #notification-shelf,
   .js-notification-shelf,
   .js-notification-top-shelf,
   .notification-shelf {
-    position: fixed !important;
+    position: sticky !important;
     top: 60px !important;
-    right: 0 !important;
-    left: 0 !important;
     z-index: 99 !important;
   }
 
-  /* `position: fixed` removes the shelf from flow — push the page
-   * content down so nothing hides underneath it. */
-  body:has(#notification-shelf) .application-main {
-    margin-top: 60px !important;
+  notification-shelf-watcher,
+  .js-notification-shelf-watcher,
+  [data-controller~="notification-shelf-watcher"],
+  :has(> #notification-shelf),
+  :has(> .js-notification-top-shelf) {
+    overflow: visible !important;
   }
 
   /* Pull-request & commit diff file headers stack below the app header */
